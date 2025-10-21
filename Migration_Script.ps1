@@ -205,3 +205,27 @@ foreach ($job in $remainingJobs) {
 }
 
 Write-Log "Alle Robocopy-Jobs abgeschlossen. Logs finden Sie unter $logPath."
+
+# --- Den gesamte Protokollordner mit Zeitstempel Archivieren ---------------------------------
+try {
+    $ts = Get-Date -Format 'yyyyMMdd_HHmmss'
+    $logFolderName = Split-Path -Path $logPath -Leaf
+    $archiveRoot   = Join-Path -Path (Split-Path -Path $logPath -Parent) -ChildPath 'LogArchives'
+
+    if (-not (Test-Path $archiveRoot)) {
+        New-Item -Path $archiveRoot -ItemType Directory | Out-Null
+        Write-Log "Archiv-Ordner erstellt: $archiveRoot"
+    }
+
+    $zipName = "${logFolderName}_$ts.zip"
+    $zipPath = Join-Path -Path $archiveRoot -ChildPath $zipName
+
+    Write-Log "Komprimiere Log-Verzeichnis '$logPath' nach '$zipPath'..."
+    if (Test-Path $zipPath) { Remove-Item -Path $zipPath -Force }
+    Compress-Archive -Path (Join-Path $logPath '*') -DestinationPath $zipPath -Force
+
+    Write-Log "Archiv erstellt: $zipPath"
+} catch {
+    Write-Log "Fehler beim Erstellen des Log-Archivs: $_" -Level "ERROR"
+}
+# ------------------------------------------------------------------------------
