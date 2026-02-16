@@ -23,19 +23,19 @@ Robocopy ExitCodes:
 [CmdletBinding()]
 param (
     [Parameter()]
-    [string]$SourceHost = "backup.abt-soc12.storage.de.bosch.com",
+    [string]$SourceHost = "sorce",
 
     [Parameter()]
-    [string]$SourceShare = "ifs\data\cc\da\CC_r_Audi_Gen5",
+    [string]$SourceShare = "path",
 
     [Parameter()]
-    [string]$TargetHost = "abt-soc505-fs.de.bosch.com",
+    [string]$TargetHost = "target",
 
     [Parameter()]
-    [string]$TargetShare = "fs\fs1\CC_r_Audi_Gen5",
+    [string]$TargetShare = "path",
 
     [Parameter()]
-    [string]$LogBasePath = "C:\_Qumulo\MigrationLogs\CC_r_Audi_Gen5",
+    [string]$LogBasePath = "C:\MigrationLogs",
 
     # --- TUNING ---
     [Parameter()]
